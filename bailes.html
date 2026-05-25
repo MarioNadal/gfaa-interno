@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bailes · Grupo Folklórico "Alto Aragón"</title>
+<script>document.documentElement.classList.add("locked");</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="site-content">
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <svg class="emblem" width="44" height="44" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" fill="#7c1f2b" stroke="#c39a44" stroke-width="2"/>
+          <text x="32" y="40" text-anchor="middle" font-family="Playfair Display, serif" font-size="20" font-weight="700" fill="#e0c47f">GFAA</text>
+        </svg>
+        <span class="brand-text">
+          <span class="brand-name">Grupo Folklórico “Alto Aragón”</span>
+          <span class="brand-sub">Zona privada</span>
+        </span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <nav class="nav-links">
+        <a href="index.html">Inicio</a>
+        <a href="agenda.html">Agenda</a>
+        <a href="albumes.html">Álbumes</a>
+        <a href="bailes.html">Bailes</a>
+        <a href="partituras.html">Partituras y Letras</a>
+        <a href="documentos.html">Documentos</a>
+        <a href="radio.html">En la radio</a>
+        <a href="#" class="nav-logout" onclick="gfaaLogout();return false;">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-band">
+    <div class="container">
+      <span class="pill">Repertorio</span>
+      <h1>Bailes</h1>
+      <p>Jotas y bailes del repertorio del grupo, con vídeos de referencia para ensayar.</p>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container prose">
+
+      <div class="tip">
+        <strong>Cómo añadir un vídeo:</strong> sube el vídeo a <strong>YouTube</strong>
+        (puedes ponerlo como "oculto"/no listado para que solo lo vea quien tenga el enlace),
+        pulsa <em>Compartir → Insertar</em> y copia el enlace que aparece como
+        <code>https://www.youtube.com/embed/XXXX</code>. Pégalo en el atributo
+        <code>src</code> del bloque correspondiente en <strong>bailes.html</strong>.
+      </div>
+
+      <div class="media">
+        <h3>Jota de baile — ejemplo</h3>
+        <div class="frame">
+          <iframe src="" title="Vídeo del baile" allowfullscreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+        </div>
+        <p>Sustituye el <code>src</code> del vídeo por el de tu grabación. Añade una breve
+        descripción del baile: pasos principales, formación y particularidades.</p>
+      </div>
+
+      <div class="media">
+        <h3>Otro baile — ejemplo</h3>
+        <div class="frame">
+          <iframe src="" title="Vídeo del baile" allowfullscreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+        </div>
+        <p>Duplica este bloque para cada baile del repertorio.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>Grupo Folklórico “Alto Aragón” · Zona privada</span>
+      <span class="muted">© <span data-year>2026</span> · Acceso solo para integrantes</span>
+    </div>
+  </footer>
+
+</div>
+<script src="assets/auth.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</ht
