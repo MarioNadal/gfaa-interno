@@ -17,8 +17,8 @@
     <div class="container nav">
       <a class="brand" href="index.html">
         <svg class="emblem" width="44" height="44" viewBox="0 0 64 64" aria-hidden="true">
-          <circle cx="32" cy="32" r="30" fill="#7c1f2b" stroke="#c39a44" stroke-width="2"/>
-          <text x="32" y="40" text-anchor="middle" font-family="Playfair Display, serif" font-size="20" font-weight="700" fill="#e0c47f">GFAA</text>
+          <circle cx="32" cy="32" r="30" fill="#a51f33" stroke="#d39a2e" stroke-width="2"/>
+          <text x="32" y="40" text-anchor="middle" font-family="Playfair Display, serif" font-size="20" font-weight="700" fill="#ffd98a">GFAA</text>
         </svg>
         <span class="brand-text">
           <span class="brand-name">Grupo Folklórico “Alto Aragón”</span>
@@ -51,48 +51,31 @@
 
   <section class="content">
     <div class="container prose">
-
-      <div class="tip">
-        <strong>Cómo añadir un documento:</strong> coloca el PDF (o Word) en la carpeta
-        <code>archivos/</code> y pon su nombre en el <code>href</code> del botón "Abrir".
-        También puedes enlazar a un documento de Google Drive. Cada fila es un bloque
-        <code>&lt;div class="file"&gt;</code> en <strong>documentos.html</strong>.
+      <div data-seccion="documentos">
+        <div class="file-grid">
+          <div class="file"><span class="fic"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg></span><div class="ft"><strong>Estatutos del grupo</strong><span>Ejemplo · documento</span></div><a class="dl" href="#">Abrir</a></div>
+          <div class="file"><span class="fic"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg></span><div class="ft"><strong>Autorización de imagen</strong><span>Ejemplo · formulario</span></div><a class="dl" href="#">Abrir</a></div>
+        </div>
       </div>
-
-      <div class="file-grid">
-
-        <div class="file">
-          <span class="fic"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg></span>
-          <div class="ft"><strong>Estatutos del grupo</strong><span>PDF · documento</span></div>
-          <a class="dl" href="#" target="_blank" rel="noopener">Abrir</a>
-        </div>
-
-        <div class="file">
-          <span class="fic"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg></span>
-          <div class="ft"><strong>Autorización de imagen</strong><span>PDF · formulario</span></div>
-          <a class="dl" href="#" target="_blank" rel="noopener">Abrir</a>
-        </div>
-
-        <div class="file">
-          <span class="fic"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg></span>
-          <div class="ft"><strong>Circular temporada 2026</strong><span>PDF · circular</span></div>
-          <a class="dl" href="#" target="_blank" rel="noopener">Abrir</a>
-        </div>
-
-      </div>
-
     </div>
   </section>
 
   <footer class="site-footer">
     <div class="container">
-      <span>Grupo Folklórico “Alto Aragón” · Zona privada</span>
-      <span class="muted">© <span data-year>2026</span> · Acceso solo para integrantes</span>
+      <span class="f-brand">
+        <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" fill="#a51f33" stroke="#d39a2e" stroke-width="2"/>
+          <text x="32" y="41" text-anchor="middle" font-family="Playfair Display, serif" font-size="20" font-weight="700" fill="#ffd98a">GFAA</text>
+        </svg>
+        Grupo Folklórico “Alto Aragón”
+      </span>
+      <span class="muted">© <span data-year>2026</span> · Zona privada · <a href="admin.html">Admin</a></span>
     </div>
   </footer>
 
 </div>
+<script src="assets/data.js"></script>
 <script src="assets/auth.js"></script>
 <script src="assets/site.js"></script>
 </body>
-</ht
+</html>
