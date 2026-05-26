@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administración · Grupo Folklórico "Alto Aragón"</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  [hidden]{display:none !important;}
+  .admin-top{background:linear-gradient(135deg,var(--garnet-deep),var(--garnet));color:#fff;
+    padding:14px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:3px solid var(--gold);}
+  .admin-top .brand-mini{font-family:var(--font-head);font-weight:700;font-size:1.1rem;}
+  .admin-top .right{display:flex;gap:8px;align-items:center;}
+  .btn-mini{background:rgba(255,255,255,.15);border:1px solid rgba(255,217,138,.4);color:#fff;
+    padding:7px 13px;border-radius:30px;cursor:pointer;font-size:.82rem;text-decoration:none;font-family:var(--font-body);}
+  .btn-mini:hover{background:rgba(255,255,255,.25);text-decoration:none;}
+  .admin-body{padding:26px 22px 60px;}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+  .tab{border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 16px;border-radius:30px;cursor:pointer;font-size:.9rem;font-family:var(--font-body);}
+  .tab.activa{background:linear-gradient(135deg,var(--garnet),var(--ember));color:#fff;border-color:transparent;font-weight:600;}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px;flex-wrap:wrap;}
+  .toolbar h2{font-family:var(--font-head);margin:0;color:var(--garnet-dark);font-size:1.5rem;}
+  .admin-list{display:flex;flex-direction:column;gap:10px;}
+  .row{background:#fff;border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:12px;
+    padding:14px 16px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm);}
+  .row .info{flex:1;min-width:0;}
+  .row .info strong{font-family:var(--font-head);font-size:1.05rem;}
+  .row .info span{display:block;color:var(--muted);font-size:.84rem;}
+  .row .acc{display:flex;gap:8px;}
+  .row .acc button{border:0;cursor:pointer;border-radius:8px;padding:7px 12px;font-size:.82rem;font-family:var(--font-body);}
+  .b-edit{background:var(--garnet);color:#fff;}
+  .b-del{background:#f3e7d2;color:var(--garnet-dark);}
+  .vacio{color:var(--muted);text-align:center;padding:30px;border:1px dashed var(--line);border-radius:12px;}
+  .modal{position:fixed;inset:0;background:rgba(60,14,22,.55);display:grid;place-items:center;padding:20px;z-index:100;}
+  .modal-card{background:#fff;border-radius:20px;max-width:560px;width:100%;padding:28px;box-shadow:0 30px 70px rgba(0,0,0,.4);max-height:90vh;overflow:auto;border-top:5px solid var(--gold);}
+  .modal-card h3{font-family:var(--font-head);margin:0 0 16px;color:var(--garnet-dark);}
+  .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;}
+  .field textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:13px;font-size:1rem;font-family:var(--font-body);background:var(--cream);min-height:90px;resize:vertical;}
+  .field textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:0 0 0 4px rgba(211,154,46,.18);}
+  .admin-msg{max-width:560px;margin:60px auto;background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px;text-align:center;box-shadow:var(--shadow);}
+  .admin-msg h2{font-family:var(--font-head);color:var(--garnet-dark);}
+  .center-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(125deg,var(--garnet-deep),var(--garnet) 45%,var(--ember));}
+  .hint{font-size:.8rem;color:var(--muted);margin:-6px 0 14px;text-align:left;}
+  #aviso{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;background:var(--garnet-dark);color:#fff;padding:12px 20px;border-radius:30px;box-shadow:var(--shadow);z-index:200;font-size:.9rem;}
+</style>
+</head>
+<body>
+
+<!-- Acceso de editor (token de GitHub) -->
+<div id="login" class="center-wrap" hidden>
+  <form id="login-form" class="auth-card" autocomplete="off">
+    <svg class="emblem" width="60" height="60" viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="32" cy="32" r="30" fill="#a51f33" stroke="#d39a2e" stroke-width="2"/>
+      <text x="32" y="41" text-anchor="middle" font-family="Playfair Display, serif" font-size="22" font-weight="700" fill="#ffd98a">GFAA</text>
+    </svg>
+    <h2>Panel de administración</h2>
+    <p class="sub">Solo para responsables del grupo</p>
+    <div class="field"><label for="token">Token de GitHub</label>
+      <input id="token" type="password" placeholder="ghp_… o github_pat_…" required></div>
+    <p class="hint">¿No tienes token? Crea uno siguiendo la guía <strong>CONFIGURAR-GITHUB.md</strong>. Se guarda solo en este navegador.</p>
+    <button class="btn" type="submit">Entrar</button>
+    <p class="auth-error" id="login-err"></p>
+    <p class="auth-foot"><a href="index.html">← Volver a la web</a></p>
+  </form>
+</div>
+
+<!-- Aplicación -->
+<div id="app" hidden>
+  <header class="admin-top">
+    <div class="brand-mini">GFAA · Administración</div>
+    <div class="right">
+      <a class="btn-mini" href="index.html">Ver la web</a>
+      <button class="btn-mini" id="refrescar">↻ Recargar</button>
+      <button class="btn-mini" id="logout">Cerrar sesión</button>
+    </div>
+  </header>
+  <div class="admin-body container">
+    <div class="tabs" id="tabs"></div>
+    <div class="toolbar"><h2 id="sec-title"></h2><button class="btn-pill" id="nuevo">+ Añadir</button></div>
+    <div class="admin-list" id="lista"></div>
+  </div>
+
+  <div class="modal" id="modal" hidden>
+    <div class="modal-card">
+      <h3 id="modal-title">Nuevo</h3>
+      <form id="form" autocomplete="off"></form>
+      <p class="auth-error" id="form-err"></p>
+      <div class="modal-actions">
+        <button class="btn-mini" id="cancelar" type="button" style="background:#eee;color:#333;border-color:#ddd;">Cancelar</button>
+        <button class="btn-pill" id="guardar" type="button">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="aviso" hidden></div>
+
+<script src="assets/config.js"></script>
+<script>
+"use strict";
+var SECCIONES = {
+  agenda:     { nombre:"Agenda", campos:[
+     {col:"titulo",label:"Título",tipo:"text",req:true},
+     {col:"fecha",label:"Fecha",tipo:"date"},
+     {col:"subtitulo",label:"Hora y lugar",tipo:"text"},
+     {col:"descripcion",label:"Descripción",tipo:"textarea"} ]},
+  albumes:    { nombre:"Álbumes", campos:[
+     {col:"titulo",label:"Título",tipo:"text",req:true},
+     {col:"url",label:"Enlace al álbum (Google Fotos, etc.)",tipo:"url"},
+     {col:"descripcion",label:"Descripción corta",tipo:"text"} ]},
+  bailes:     { nombre:"Bailes", campos:[
+     {col:"titulo",label:"Título",tipo:"text",req:true},
+     {col:"url",label:"Enlace del vídeo (YouTube)",tipo:"url"},
+     {col:"descripcion",label:"Descripción",tipo:"textarea"} ]},
+  partituras: { nombre:"Partituras y Letras", campos:[
+     {col:"titulo",label:"Título",tipo:"text",req:true},
+     {col:"subtitulo",label:"Tipo (p. ej. PDF · partitura)",tipo:"text"},
+     {col:"url",label:"Enlace al PDF (vacío si es solo letra)",tipo:"url"},
+     {col:"descripcion",label:"Letra / notas",tipo:"textarea"} ]},
+  documentos: { nombre:"Documentos", campos:[
+     {col:"titulo",label:"Título",tipo:"text",req:true},
+     {col:"subtitulo",label:"Tipo",tipo:"text"},
+     {col:"url",label:"Enlace al documento (PDF, Drive...)",tipo:"url"} ]},
+  radio:      { nombre:"En la radio", campos:[
+     {col:"titulo",label:"Título",tipo:"text",req:true},
+     {col:"subtitulo",label:"Programa y fecha",tipo:"text"},
+     {col:"url",label:"Enlace al audio (MP3)",tipo:"url"},
+     {col:"descripcion",label:"Descripción",tipo:"textarea"} ]}
+};
+
+var $ = function(id){ return document.getElementById(id); };
+var esc = function(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); };
+function aviso(t){ var a=$("aviso"); a.textContent=t; a.hidden=false; setTimeout(function(){a.hidden=true;},2600); }
+
+var GH = window.GFAA_GITHUB || {};
+var TKEY = "gfaa_gh_token";
+var token = "";
+try{ token = localStorage.getItem(TKEY) || ""; }catch(e){}
+var estado = { items:[], sha:null };
+var seccionActual = "agenda";
+var edicionId = null;
+
+function apiUrl(){ return "https://api.github.com/repos/"+GH.owner+"/"+GH.repo+"/contents/"+GH.ruta; }
+function b64enc(s){ return btoa(unescape(encodeURIComponent(s))); }
+function b64dec(s){ return decodeURIComponent(escape(atob(String(s).replace(/\s/g,"")))); }
+function nuevoId(){ return "x"+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+
+async function ghLeer(){
+  var r = await fetch(apiUrl()+"?ref="+encodeURIComponent(GH.branch)+"&t="+Date.now(), {
+    headers:{ "Authorization":"Bearer "+token, "Accept":"application/vnd.github+json" }, cache:"no-store"
+  });
+  if(r.status===404) return { items:[], sha:null };
+  if(r.status===401) throw new Error("Token no válido o caducado.");
+  if(r.status===403) throw new Error("El token no tiene permiso sobre este repositorio.");
+  if(!r.ok) throw new Error("Error "+r.status+" al leer.");
+  var j = await r.json();
+  var items=[];
+  try{ items = JSON.parse(b64dec(j.content)); }catch(e){ items=[]; }
+  return { items: Array.isArray(items)?items:[], sha: j.sha };
+}
+async function ghEscribir(items, sha){
+  var cuerpo = { message:"Actualizar contenido de la web (panel GFAA)", content:b64enc(JSON.stringify(items,null,2)), branch:GH.branch };
+  if(sha) cuerpo.sha = sha;
+  var r = await fetch(apiUrl(), {
+    method:"PUT",
+    headers:{ "Authorization":"Bearer "+token, "Accept":"application/vnd.github+json", "Content-Type":"application/json" },
+    body: JSON.stringify(cuerpo)
+  });
+  if(!r.ok) throw new Error("No se pudo guardar (código "+r.status+").");
+  var j = await r.json();
+  return j.content.sha;
+}
+// Cada operación lee lo último, lo modifica y lo guarda (evita pisar cambios de otros)
+async function operar(modificar){
+  var fresco = await ghLeer();
+  modificar(fresco.items);
+  var nuevoSha = await ghEscribir(fresco.items, fresco.sha);
+  estado.items = fresco.items; estado.sha = nuevoSha;
+}
+
+function mostrar(id){ ["login","app"].forEach(function(x){ $(x).hidden = (x!==id); }); }
+
+async function arrancar(){
+  if(!GH.owner || !GH.repo){ alert("Falta configurar el repositorio en assets/config.js"); }
+  if(token){
+    try{ var d = await ghLeer(); estado.items=d.items; estado.sha=d.sha; entrarApp(); return; }
+    catch(e){ /* token guardado no válido: pedirlo de nuevo */ }
+  }
+  mostrar("login");
+}
+
+$("login-form").addEventListener("submit", async function(e){
+  e.preventDefault();
+  $("login-err").textContent = "";
+  token = $("token").value.trim();
+  try{
+    var d = await ghLeer();
+    estado.items=d.items; estado.sha=d.sha;
+    try{ localStorage.setItem(TKEY, token); }catch(_){}
+    entrarApp();
+  }catch(err){ $("login-err").textContent = err.message; }
+});
+
+$("logout").addEventListener("click", function(){
+  try{ localStorage.removeItem(TKEY); }catch(e){}
+  token=""; location.reload();
+});
+$("refrescar").addEventListener("click", async function(){
+  try{ var d=await ghLeer(); estado.items=d.items; estado.sha=d.sha; cargarLista(); aviso("Contenido actualizado."); }
+  catch(e){ aviso("No se pudo recargar."); }
+});
+
+function entrarApp(){ mostrar("app"); pintarTabs(); seleccionar("agenda"); }
+
+function pintarTabs(){
+  var h="";
+  Object.keys(SECCIONES).forEach(function(k){ h+='<button class="tab" data-k="'+k+'">'+esc(SECCIONES[k].nombre)+'</button>'; });
+  $("tabs").innerHTML=h;
+  Array.prototype.forEach.call($("tabs").querySelectorAll(".tab"), function(b){
+    b.addEventListener("click", function(){ seleccionar(b.getAttribute("data-k")); });
+  });
+}
+function seleccionar(k){
+  seccionActual=k;
+  Array.prototype.forEach.call($("tabs").querySelectorAll(".tab"), function(b){ b.classList.toggle("activa", b.getAttribute("data-k")===k); });
+  $("sec-title").textContent = SECCIONES[k].nombre;
+  cargarLista();
+}
+function cargarLista(){
+  var rows = estado.items.filter(function(x){ return x.seccion===seccionActual; });
+  if(!rows.length){ $("lista").innerHTML='<p class="vacio">Todavía no hay nada aquí. Pulsa “+ Añadir”.</p>'; return; }
+  var h="";
+  rows.forEach(function(x){
+    var meta=[x.fecha,x.subtitulo].filter(Boolean).join(" · ");
+    h+='<div class="row"><div class="info"><strong>'+esc(x.titulo)+'</strong>'+(meta?'<span>'+esc(meta)+'</span>':'')+'</div>'+
+       '<div class="acc"><button class="b-edit" data-id="'+esc(x.id)+'">Editar</button>'+
+       '<button class="b-del" data-id="'+esc(x.id)+'">Borrar</button></div></div>';
+  });
+  $("lista").innerHTML=h;
+  Array.prototype.forEach.call($("lista").querySelectorAll(".b-edit"), function(b){
+    b.addEventListener("click", function(){ abrirForm(estado.items.find(function(z){return z.id===b.getAttribute("data-id");})); });
+  });
+  Array.prototype.forEach.call($("lista").querySelectorAll(".b-del"), function(b){
+    b.addEventListener("click", function(){ borrar(b.getAttribute("data-id")); });
+  });
+}
+function abrirForm(row){
+  edicionId = row ? row.id : null;
+  $("modal-title").textContent = row ? "Editar" : "Añadir";
+  $("form-err").textContent="";
+  var h="";
+  SECCIONES[seccionActual].campos.forEach(function(c){
+    var val = row ? (row[c.col]==null?"":row[c.col]) : "";
+    h+='<div class="field"><label for="f-'+c.col+'">'+esc(c.label)+(c.req?' *':'')+'</label>';
+    h+= c.tipo==="textarea" ? '<textarea id="f-'+c.col+'">'+esc(val)+'</textarea>'
+                            : '<input id="f-'+c.col+'" type="'+c.tipo+'" value="'+esc(val)+'">';
+    h+='</div>';
+  });
+  $("form").innerHTML=h;
+  $("modal").hidden=false;
+}
+$("cancelar").addEventListener("click", function(){ $("modal").hidden=true; });
+$("nuevo").addEventListener("click", function(){ abrirForm(null); });
+
+$("guardar").addEventListener("click", async function(){
+  $("form-err").textContent="";
+  var campos = SECCIONES[seccionActual].campos;
+  var datos = {};
+  var falta=false;
+  campos.forEach(function(c){
+    var el=$("f-"+c.col); var v=el?el.value.trim():"";
+    if(c.req && !v) falta=true;
+    datos[c.col] = v===""?null:v;
+  });
+  if(falta){ $("form-err").textContent="Falta el título."; return; }
+  $("guardar").disabled=true; $("guardar").textContent="Guardando…";
+  try{
+    if(edicionId){
+      await operar(function(items){
+        var i=items.findIndex(function(z){return z.id===edicionId;});
+        if(i>=0){ campos.forEach(function(c){ items[i][c.col]=datos[c.col]; }); }
+      });
+    }else{
+      var nuevo = { id:nuevoId(), seccion:seccionActual, orden:Date.now() };
+      campos.forEach(function(c){ nuevo[c.col]=datos[c.col]; });
+      await operar(function(items){ items.push(nuevo); });
+    }
+    $("modal").hidden=true; cargarLista(); aviso("Guardado. Aparecerá en la web en ~1 minuto.");
+  }catch(err){ $("form-err").textContent = err.message; }
+  $("guardar").disabled=false; $("guardar").textContent="Guardar";
+});
+
+async function borrar(id){
+  if(!confirm("¿Seguro que quieres borrar este elemento? No se puede deshacer.")) return;
+  try{
+    await operar(function(items){
+      var i=items.findIndex(function(z){return z.id===id;});
+      if(i>=0) items.splice(i,1);
+    });
+    cargarLista(); aviso("Borrado.");
+  }catch(err){ alert(err.message); }
+}
+
+arrancar();
+</script>
+</body>
+</html>

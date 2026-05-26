@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bailes · Grupo Folklórico "Alto Aragón"</title>
+<script>document.documentElement.classList.add("locked");</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="site-content">
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <svg class="emblem" width="44" height="44" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" fill="#a51f33" stroke="#d39a2e" stroke-width="2"/>
+          <text x="32" y="40" text-anchor="middle" font-family="Playfair Display, serif" font-size="20" font-weight="700" fill="#ffd98a">GFAA</text>
+        </svg>
+        <span class="brand-text">
+          <span class="brand-name">Grupo Folklórico “Alto Aragón”</span>
+          <span class="brand-sub">Zona privada</span>
+        </span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <nav class="nav-links">
+        <a href="index.html">Inicio</a>
+        <a href="agenda.html">Agenda</a>
+        <a href="albumes.html">Álbumes</a>
+        <a href="bailes.html">Bailes</a>
+        <a href="partituras.html">Partituras y Letras</a>
+        <a href="documentos.html">Documentos</a>
+        <a href="radio.html">En la radio</a>
+        <a href="#" class="nav-logout" onclick="gfaaLogout();return false;">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-band">
+    <div class="container">
+      <span class="pill">Repertorio</span>
+      <h1>Bailes</h1>
+      <p>Jotas y bailes del repertorio, con vídeos de referencia para ensayar.</p>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container prose">
+      <div data-seccion="bailes">
+        <div class="tip" style="text-align:center;">Aquí aparecerán los bailes con su vídeo. Los responsables los añaden desde <a href="admin.html">el panel de administración</a>.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span class="f-brand">
+        <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" fill="#a51f33" stroke="#d39a2e" stroke-width="2"/>
+          <text x="32" y="41" text-anchor="middle" font-family="Playfair Display, serif" font-size="20" font-weight="700" fill="#ffd98a">GFAA</text>
+        </svg>
+        Grupo Folklórico “Alto Aragón”
+      </span>
+      <span class="muted">© <span data-year>2026</span> · Zona privada · <a href="admin.html">Admin</a></span>
+    </div>
+  </footer>
+
+</div>
+<script src="assets/data.js"></script>
+<script src="assets/auth.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>
