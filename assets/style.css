@@ -363,3 +363,15 @@ code{background:#f3e7d2;padding:2px 6px;border-radius:6px;font-size:.88em;}
   .hero{padding:80px 0 90px;}
   .strip .container{gap:22px;flex-direction:column;align-items:flex-start;}
 }
+
+/* ---- Tarjetas con foto (portada) ---- */
+.card{padding:0;align-items:stretch;text-align:left;}
+.card::before{display:none;}
+.card .card-img{display:block;width:100%;aspect-ratio:16/10;
+  background:linear-gradient(135deg,var(--garnet),var(--ember));background-size:cover;background-position:center;
+  transition:transform .45s ease;}
+.card:hover .card-img{transform:scale(1.06);}
+.card .card-body{padding:20px 22px 24px;}
+.card .card-body h3{font-family:var(--font-head);font-size:1.3rem;margin:0 0 4px;}
+.card .card-body p{margin:0;color:var(--muted);font-size:.92rem;}
+.card .card-body .go{display:inline-block;margin-top:12px;}
