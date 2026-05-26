@@ -1,7 +1,0 @@
-Coloca aquí los archivos que quieras ofrecer en la web:
-- Partituras y documentos en PDF
-- Audios de radio en MP3
-
-Luego enlázalos desde las páginas (partituras.html, documentos.html, radio.html)
-poniendo el nombre del archivo en el enlace correspondiente, por ejemplo:
-  archivos/jota-de-baile.pdf
