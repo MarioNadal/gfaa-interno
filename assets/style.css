@@ -391,3 +391,9 @@ code{background:#f3e7d2;padding:2px 6px;border-radius:6px;font-size:.88em;}
 .card .card-cap{position:absolute;left:0;right:0;bottom:0;z-index:2;
   padding:20px 22px 22px;font-family:var(--font-head);font-weight:700;
   font-size:1.7rem;line-height:1.1;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.65);}
+
+/* ---- Logo del grupo (imagen) ---- */
+.emblem{display:block;border-radius:50%;object-fit:cover;background:#fff;}
+.brand .emblem{width:46px;height:46px;box-shadow:0 2px 8px rgba(0,0,0,.28);}
+.site-footer .emblem{width:34px;height:34px;}
+.auth-card .emblem{width:66px;height:66px;margin:0 auto 16px;box-shadow:0 6px 16px rgba(0,0,0,.2);}

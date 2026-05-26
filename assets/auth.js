@@ -111,12 +111,7 @@ function gfaaPintarSaludo(){
 
 /* ---------- Pantalla de acceso ---------- */
 function gfaaMostrarLogin(){
-  var emblem = ''+
-    '<svg class="emblem" width="60" height="60" viewBox="0 0 64 64" aria-hidden="true">'+
-      '<circle cx="32" cy="32" r="30" fill="#a51f33" stroke="#d39a2e" stroke-width="2"/>'+
-      '<text x="32" y="41" text-anchor="middle" font-family="Playfair Display, serif" '+
-        'font-size="22" font-weight="700" fill="#ffd98a">GFAA</text>'+
-    '</svg>';
+  var emblem = '<img class="emblem" src="assets/img/logo.png" alt="Grupo Folklórico Alto Aragón">';
 
   var ov = document.createElement("div");
   ov.id = "gfaa-auth";
