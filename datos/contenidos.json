@@ -1,5 +1,35 @@
 [
-  { "id":"b1", "seccion":"albumes", "titulo":"Actuación de Fiestas 2025", "descripcion":"Fotos de la actuación", "url":"#", "orden":1 },
-  { "id":"p1", "seccion":"partituras", "titulo":"Jota de baile (ejemplo)", "subtitulo":"PDF · partitura", "url":"#", "orden":1 },
-  { "id":"dc1", "seccion":"documentos", "titulo":"Estatutos del grupo", "subtitulo":"Documento", "url":"#", "orden":1 }
+  {
+    "id": "b1",
+    "seccion": "albumes",
+    "titulo": "Actuación de Fiestas 2025",
+    "descripcion": "Fotos de la actuación",
+    "url": "#",
+    "orden": 1
+  },
+  {
+    "id": "p1",
+    "seccion": "partituras",
+    "titulo": "Jota de baile (ejemplo)",
+    "subtitulo": "PDF · partitura",
+    "url": "#",
+    "orden": 1
+  },
+  {
+    "id": "dc1",
+    "seccion": "documentos",
+    "titulo": "Estatutos del grupo",
+    "subtitulo": "Documento",
+    "url": "#",
+    "orden": 1
+  },
+  {
+    "id": "xmpmegc0r5g3f",
+    "seccion": "albumes",
+    "orden": 1779785701083,
+    "titulo": "Virgen de la Cueva 2026",
+    "imagen": "archivos/1779785697359-IMG_3497.JPG",
+    "url": "https://drive.google.com/drive/folders/10PVAnB9aIIIzVXsqMkfWWz0xkte-97WP?usp=drive_link",
+    "descripcion": "Fotos Festival Virgen de la Cueva 2026 Cantera GFAA"
+  }
 ]
