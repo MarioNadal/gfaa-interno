@@ -9,15 +9,6 @@
     "orden": 1
   },
   {
-    "id": "a2",
-    "seccion": "agenda",
-    "titulo": "Ensayo general",
-    "subtitulo": "18:00 h · Local del grupo",
-    "descripcion": "Repaso completo del programa de verano.",
-    "fecha": "2026-06-21",
-    "orden": 2
-  },
-  {
     "id": "b1",
     "seccion": "albumes",
     "titulo": "Actuación de Fiestas 2025",
