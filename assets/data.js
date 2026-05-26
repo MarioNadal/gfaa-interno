@@ -1,10 +1,9 @@
 /* =========================================================
    Grupo Folklórico "Alto Aragón" — Capa de datos (GitHub)
-   Lee el contenido de datos/contenidos.json (en el repositorio)
-   y lo pinta en cada sección. Si no se puede leer, deja los ejemplos.
+   Lee datos/contenidos.json y lo pinta en cada sección.
+   Soporta foto de portada (campo "imagen") en cada elemento.
    ========================================================= */
 
-/* Utilidades */
 function gfaaEsc(s){
   return String(s==null?"":s)
     .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
@@ -15,9 +14,9 @@ function gfaaDia(f){ if(!f) return ""; var d=new Date(f+"T00:00:00"); return isN
 function gfaaMes(f){ if(!f) return ""; var d=new Date(f+"T00:00:00"); return isNaN(d)?"":GFAA_MESES[d.getMonth()]; }
 function gfaaYoutubeEmbed(u){
   if(!u) return "";
-  u = String(u).trim();
-  var m = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{6,})/);
-  return m ? "https://www.youtube.com/embed/" + m[1] : u;
+  u=String(u).trim();
+  var m=u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{6,})/);
+  return m ? "https://www.youtube.com/embed/"+m[1] : u;
 }
 function gfaaOrden(a,b){
   var fa=a.fecha||"9999-99-99", fb=b.fecha||"9999-99-99";
@@ -25,11 +24,10 @@ function gfaaOrden(a,b){
   return (a.orden||0)-(b.orden||0);
 }
 
-/* Cargar el JSON del repositorio (una sola vez) */
 async function gfaaCargarTodo(){
   if(window.__gfaaDatos) return window.__gfaaDatos;
   try{
-    var r = await fetch("datos/contenidos.json?t=" + Date.now(), { cache:"no-store" });
+    var r = await fetch("datos/contenidos.json?t="+Date.now(), { cache:"no-store" });
     if(!r.ok) return null;
     var arr = await r.json();
     window.__gfaaDatos = Array.isArray(arr) ? arr : [];
@@ -42,7 +40,8 @@ function gfaaRenderAgenda(rows){
   if(!rows.length) return gfaaVacio("Todavía no hay eventos en la agenda.");
   var h='<ul class="list">';
   rows.forEach(function(x){
-    h+='<li class="item"><div class="when"><span class="d">'+(gfaaDia(x.fecha)||"·")+'</span><span class="m">'+gfaaMes(x.fecha)+'</span></div>'+
+    h+='<li class="item">'+
+       (x.imagen?'<img class="item-img" src="'+gfaaEsc(x.imagen)+'" alt="">':'<div class="when"><span class="d">'+(gfaaDia(x.fecha)||"·")+'</span><span class="m">'+gfaaMes(x.fecha)+'</span></div>')+
        '<div class="body"><h3>'+gfaaEsc(x.titulo)+'</h3>'+
        (x.subtitulo?'<p class="meta">'+gfaaEsc(x.subtitulo)+'</p>':'')+
        (x.descripcion?'<p>'+gfaaEsc(x.descripcion)+'</p>':'')+'</div></li>';
@@ -54,7 +53,10 @@ function gfaaRenderAlbumes(rows){
   var ico='<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>';
   var h='<div class="gallery">';
   rows.forEach(function(x){
-    h+='<a class="album" href="'+gfaaEsc(x.url||"#")+'" target="_blank" rel="noopener"><div class="cover">'+ico+'</div>'+
+    var cover = x.imagen
+      ? '<div class="cover has-img" style="background-image:url(\''+gfaaEsc(x.imagen)+'\')"></div>'
+      : '<div class="cover">'+ico+'</div>';
+    h+='<a class="album" href="'+gfaaEsc(x.url||"#")+'" target="_blank" rel="noopener">'+cover+
        '<div class="cap"><strong>'+gfaaEsc(x.titulo)+'</strong>'+(x.descripcion?'<span>'+gfaaEsc(x.descripcion)+'</span>':'')+'</div></a>';
   });
   return h+'</div>';
@@ -66,23 +68,28 @@ function gfaaRenderBailes(rows){
     h+='<div class="media"><h3>'+gfaaEsc(x.titulo)+'</h3>';
     var emb=gfaaYoutubeEmbed(x.url);
     if(emb) h+='<div class="frame"><iframe src="'+gfaaEsc(emb)+'" title="Vídeo" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe></div>';
+    else if(x.imagen) h+='<img class="media-img" src="'+gfaaEsc(x.imagen)+'" alt="">';
     if(x.descripcion) h+='<p>'+gfaaEsc(x.descripcion)+'</p>';
     h+='</div>';
   });
   return h;
 }
+function gfaaFileCard(x, tipoDef, accion){
+  var ico='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
+  var fic = x.imagen
+    ? '<span class="fic fic-img" style="background-image:url(\''+gfaaEsc(x.imagen)+'\')"></span>'
+    : '<span class="fic">'+ico+'</span>';
+  return '<div class="file">'+fic+'<div class="ft"><strong>'+gfaaEsc(x.titulo)+'</strong><span>'+gfaaEsc(x.subtitulo||tipoDef)+'</span></div>'+
+         (x.url?'<a class="dl" href="'+gfaaEsc(x.url)+'" target="_blank" rel="noopener">'+accion+'</a>':'')+'</div>';
+}
 function gfaaRenderPartituras(rows){
   if(!rows.length) return gfaaVacio("Todavía no hay partituras ni letras.");
-  var ficheros=rows.filter(function(x){return x.url;});
-  var letras=rows.filter(function(x){return !x.url && x.descripcion;});
-  var ico='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
+  var ficheros=rows.filter(function(x){ return x.url; });
+  var letras=rows.filter(function(x){ return !x.url && x.descripcion; });
   var h='';
   if(ficheros.length){
     h+='<div class="file-grid">';
-    ficheros.forEach(function(x){
-      h+='<div class="file"><span class="fic">'+ico+'</span><div class="ft"><strong>'+gfaaEsc(x.titulo)+'</strong><span>'+gfaaEsc(x.subtitulo||"PDF")+'</span></div>'+
-         '<a class="dl" href="'+gfaaEsc(x.url)+'" target="_blank" rel="noopener">Descargar</a></div>';
-    });
+    ficheros.forEach(function(x){ h+=gfaaFileCard(x,"PDF","Descargar"); });
     h+='</div>';
   }
   letras.forEach(function(x){
@@ -93,19 +100,17 @@ function gfaaRenderPartituras(rows){
 }
 function gfaaRenderDocumentos(rows){
   if(!rows.length) return gfaaVacio("Todavía no hay documentos.");
-  var ico='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg>';
   var h='<div class="file-grid">';
-  rows.forEach(function(x){
-    h+='<div class="file"><span class="fic">'+ico+'</span><div class="ft"><strong>'+gfaaEsc(x.titulo)+'</strong><span>'+gfaaEsc(x.subtitulo||"Documento")+'</span></div>'+
-       '<a class="dl" href="'+gfaaEsc(x.url||"#")+'" target="_blank" rel="noopener">Abrir</a></div>';
-  });
+  rows.forEach(function(x){ h+=gfaaFileCard(x,"Documento","Abrir"); });
   return h+'</div>';
 }
 function gfaaRenderRadio(rows){
   if(!rows.length) return gfaaVacio("Todavía no hay grabaciones.");
   var h='';
   rows.forEach(function(x){
-    h+='<div class="media"><h3>'+gfaaEsc(x.titulo)+'</h3>'+(x.subtitulo?'<p class="meta" style="color:var(--muted);">'+gfaaEsc(x.subtitulo)+'</p>':'');
+    h+='<div class="media"><h3>'+gfaaEsc(x.titulo)+'</h3>'+
+       (x.subtitulo?'<p class="meta" style="color:var(--muted);">'+gfaaEsc(x.subtitulo)+'</p>':'');
+    if(x.imagen) h+='<img class="media-img" src="'+gfaaEsc(x.imagen)+'" alt="">';
     if(x.url) h+='<audio controls preload="none"><source src="'+gfaaEsc(x.url)+'">Tu navegador no admite audio.</audio>';
     if(x.descripcion) h+='<p style="margin-top:8px;">'+gfaaEsc(x.descripcion)+'</p>';
     h+='</div>';
@@ -121,13 +126,12 @@ var GFAA_RENDER = {
   partituras:gfaaRenderPartituras, documentos:gfaaRenderDocumentos, radio:gfaaRenderRadio
 };
 
-/* ---------- Arranque en páginas de sección ---------- */
 async function gfaaInitSeccion(){
   var cont = document.querySelector("[data-seccion]");
   if(!cont) return;
   var seccion = cont.getAttribute("data-seccion");
   var todo = await gfaaCargarTodo();
-  if(todo === null) return;                 // sin datos: deja los ejemplos
+  if(todo === null) return;
   var rows = todo.filter(function(x){ return x.seccion === seccion; }).sort(gfaaOrden);
   var render = GFAA_RENDER[seccion];
   if(render) cont.innerHTML = render(rows);
