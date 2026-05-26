@@ -42,20 +42,27 @@
     <div class="container">
       <span class="pill">Calendario del grupo</span>
       <h1>Agenda</h1>
-      <p>Próximas actuaciones, ensayos y eventos del grupo.</p>
+      <p>Todas las actuaciones, ensayos y eventos. Se actualiza solo desde el calendario del grupo.</p>
     </div>
   </section>
 
   <section class="content">
-    <div class="container prose">
-      <div data-seccion="agenda">
-        <ul class="list">
-          <li class="item"><div class="when"><span class="d">14</span><span class="m">Jun</span></div>
-            <div class="body"><h3>Actuación · Fiestas del barrio</h3><p class="meta">19:30 h · Plaza Mayor</p><p>Repertorio de jotas de baile. Cita 1 hora antes.</p></div></li>
-          <li class="item"><div class="when"><span class="d">21</span><span class="m">Jun</span></div>
-            <div class="body"><h3>Ensayo general</h3><p class="meta">18:00 h · Local del grupo</p><p>Repaso completo del programa de verano.</p></div></li>
-        </ul>
+    <div class="container">
+
+      <div id="cal-actions" class="cal-actions" style="display:none;">
+        <a id="btn-google" class="btn-pill" target="_blank" rel="noopener">+ Añadir a mi Google Calendar</a>
+        <a id="btn-ical" class="btn-ghost" target="_blank" rel="noopener">Suscribirse (Apple / Outlook)</a>
       </div>
+
+      <div id="cal-cont">
+        <div class="tip" style="max-width:760px;margin:0 auto;text-align:center;">
+          <strong>El calendario del grupo aún no está conectado.</strong><br>
+          Sigue la guía <strong>CONFIGURAR-CALENDARIO.md</strong> (5 minutos): crea el calendario de Google,
+          hazlo público y pega su “ID” en <code>assets/config.js</code>. Cuando lo hagas, aquí se verá el
+          calendario con todas las fechas y se actualizará solo al añadir eventos.
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -70,8 +77,26 @@
   </footer>
 
 </div>
-<script src="assets/data.js"></script>
+
+<script src="assets/config.js"></script>
 <script src="assets/auth.js"></script>
 <script src="assets/site.js"></script>
+<script>
+(function(){
+  var cfg = window.GFAA_CALENDAR || {};
+  if(!cfg.id) return;  // sin configurar: se queda el aviso
+  var id = encodeURIComponent(cfg.id);
+  var tz = encodeURIComponent(cfg.tz || "Europe/Madrid");
+  var src = "https://calendar.google.com/calendar/embed?src="+id+"&ctz="+tz+
+            "&mode=MONTH&wkst=2&showTitle=0&showPrint=0&showTz=0&showCalendars=0&showTabs=1&bgcolor=%23ffffff";
+  document.getElementById("cal-cont").innerHTML =
+    '<div class="cal-frame"><iframe src="'+src+'" scrolling="no"></iframe></div>';
+  var g = document.getElementById("btn-google");
+  var i = document.getElementById("btn-ical");
+  g.href = "https://calendar.google.com/calendar/render?cid="+id;
+  i.href = "https://calendar.google.com/calendar/ical/"+id+"/public/basic.ics";
+  document.getElementById("cal-actions").style.display = "flex";
+})();
+</script>
 </body>
 </html>
