@@ -375,3 +375,19 @@ code{background:#f3e7d2;padding:2px 6px;border-radius:6px;font-size:.88em;}
 .card .card-body h3{font-family:var(--font-head);font-size:1.3rem;margin:0 0 4px;}
 .card .card-body p{margin:0;color:var(--muted);font-size:.92rem;}
 .card .card-body .go{display:inline-block;margin-top:12px;}
+
+/* ---- Tarjetas: imagen grande + solo título (overlay) ---- */
+.card-grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;}
+.card{position:relative;display:block;overflow:hidden;border-radius:var(--radius);
+  min-height:300px;padding:0;border:1px solid var(--line);color:#fff;
+  box-shadow:var(--shadow-sm);text-decoration:none;
+  transition:transform .25s ease,box-shadow .25s ease;}
+.card .card-img{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;
+  background-size:cover;background-position:center;transition:transform .55s ease;z-index:0;}
+.card::after{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(to top,rgba(40,10,16,.92) 0%,rgba(40,10,16,.38) 42%,rgba(40,10,16,0) 70%);}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow);}
+.card:hover .card-img{transform:scale(1.07);}
+.card .card-cap{position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:20px 22px 22px;font-family:var(--font-head);font-weight:700;
+  font-size:1.7rem;line-height:1.1;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.65);}
