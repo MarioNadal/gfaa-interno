@@ -397,3 +397,14 @@ code{background:#f3e7d2;padding:2px 6px;border-radius:6px;font-size:.88em;}
 .brand .emblem{width:46px;height:46px;box-shadow:0 2px 8px rgba(0,0,0,.28);}
 .site-footer .emblem{width:34px;height:34px;}
 .auth-card .emblem{width:66px;height:66px;margin:0 auto 16px;box-shadow:0 6px 16px rgba(0,0,0,.2);}
+
+/* ---- Agenda: calendario de Google ---- */
+.cal-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:0 auto 24px;}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--garnet);color:var(--garnet);
+  background:#fff;font-weight:600;font-family:var(--font-body);padding:12px 22px;border-radius:40px;
+  text-decoration:none;transition:background .15s,color .15s;}
+.btn-ghost:hover{background:var(--garnet);color:#fff;text-decoration:none;}
+.cal-frame{max-width:980px;margin:0 auto;border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);border:1px solid var(--line);background:#fff;}
+.cal-frame iframe{display:block;width:100%;height:640px;border:0;}
+@media (max-width:600px){.cal-frame iframe{height:520px;}}
