@@ -1,13 +1,5 @@
 [
   {
-    "id": "b1",
-    "seccion": "albumes",
-    "titulo": "Actuación de Fiestas 2025",
-    "descripcion": "Fotos de la actuación",
-    "url": "#",
-    "orden": 1
-  },
-  {
     "id": "p1",
     "seccion": "partituras",
     "titulo": "Jota de baile (ejemplo)",
