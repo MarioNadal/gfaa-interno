@@ -1,7 +1,53 @@
 [
-  { "id":"a1", "seccion":"agenda", "titulo":"Actuación · Fiestas del barrio", "subtitulo":"19:30 h · Plaza Mayor", "descripcion":"Repertorio de jotas de baile. Cita 1 hora antes para vestuario.", "fecha":"2026-06-14", "orden":1 },
-  { "id":"a2", "seccion":"agenda", "titulo":"Ensayo general", "subtitulo":"18:00 h · Local del grupo", "descripcion":"Repaso completo del programa de verano.", "fecha":"2026-06-21", "orden":2 },
-  { "id":"b1", "seccion":"albumes", "titulo":"Actuación de Fiestas 2025", "descripcion":"Fotos de la actuación", "url":"#", "orden":1 },
-  { "id":"p1", "seccion":"partituras", "titulo":"Jota de baile (ejemplo)", "subtitulo":"PDF · partitura", "url":"#", "orden":1 },
-  { "id":"dc1", "seccion":"documentos", "titulo":"Estatutos del grupo", "subtitulo":"Documento", "url":"#", "orden":1 }
+  {
+    "id": "a1",
+    "seccion": "agenda",
+    "titulo": "Actuación · Fiestas del barrio",
+    "subtitulo": "19:30 h · Plaza Mayor",
+    "descripcion": "Repertorio de jotas de baile. Cita 1 hora antes para vestuario.",
+    "fecha": "2026-06-14",
+    "orden": 1
+  },
+  {
+    "id": "a2",
+    "seccion": "agenda",
+    "titulo": "Ensayo general",
+    "subtitulo": "18:00 h · Local del grupo",
+    "descripcion": "Repaso completo del programa de verano.",
+    "fecha": "2026-06-21",
+    "orden": 2
+  },
+  {
+    "id": "b1",
+    "seccion": "albumes",
+    "titulo": "Actuación de Fiestas 2025",
+    "descripcion": "Fotos de la actuación",
+    "url": "#",
+    "orden": 1
+  },
+  {
+    "id": "p1",
+    "seccion": "partituras",
+    "titulo": "Jota de baile (ejemplo)",
+    "subtitulo": "PDF · partitura",
+    "url": "#",
+    "orden": 1
+  },
+  {
+    "id": "dc1",
+    "seccion": "documentos",
+    "titulo": "Estatutos del grupo",
+    "subtitulo": "Documento",
+    "url": "#",
+    "orden": 1
+  },
+  {
+    "id": "xmpm9r7lvduid",
+    "seccion": "agenda",
+    "orden": 1779777810499,
+    "titulo": "Trinidad",
+    "fecha": "2026-05-31",
+    "subtitulo": "Calle Mayor",
+    "descripcion": "Los bailadores de Santa Orosia reciben a los reomeros en su vuelta de Yebra"
+  }
 ]
