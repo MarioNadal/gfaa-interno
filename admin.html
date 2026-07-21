@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
 <title>Administración · Grupo Folklórico "Alto Aragón"</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,9 +20,12 @@
     padding:7px 13px;border-radius:30px;cursor:pointer;font-size:.82rem;text-decoration:none;font-family:var(--font-body);}
   .btn-mini:hover{background:rgba(255,255,255,.25);text-decoration:none;}
   .admin-body{padding:26px 22px 60px;}
+  .admin-help{margin-bottom:20px;}
   .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
-  .tab{border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 16px;border-radius:30px;cursor:pointer;font-size:.9rem;font-family:var(--font-body);}
+  .tab{border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 16px;border-radius:30px;cursor:pointer;font-size:.9rem;font-family:var(--font-body);display:inline-flex;align-items:center;gap:7px;}
   .tab.activa{background:linear-gradient(135deg,var(--garnet),var(--ember));color:#fff;border-color:transparent;font-weight:600;}
+  .tab-n{background:rgba(0,0,0,.08);border-radius:20px;padding:1px 8px;font-size:.76rem;font-weight:700;min-width:1.4em;text-align:center;}
+  .tab.activa .tab-n{background:rgba(255,255,255,.25);}
   .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px;flex-wrap:wrap;}
   .toolbar h2{font-family:var(--font-head);margin:0;color:var(--garnet-dark);font-size:1.5rem;}
   .admin-list{display:flex;flex-direction:column;gap:10px;}
@@ -35,6 +39,7 @@
   .b-edit{background:var(--garnet);color:#fff;}
   .b-del{background:#f3e7d2;color:var(--garnet-dark);}
   .vacio{color:var(--muted);text-align:center;padding:30px;border:1px dashed var(--line);border-radius:12px;}
+  .cargando-lista{color:var(--muted);text-align:center;padding:30px;}
   .modal{position:fixed;inset:0;background:rgba(60,14,22,.55);display:grid;place-items:center;padding:20px;z-index:100;}
   .modal-card{background:#fff;border-radius:20px;max-width:560px;width:100%;padding:28px;box-shadow:0 30px 70px rgba(0,0,0,.4);max-height:90vh;overflow:auto;border-top:5px solid var(--gold);}
   .modal-card h3{font-family:var(--font-head);margin:0 0 16px;color:var(--garnet-dark);}
@@ -50,6 +55,11 @@
 </head>
 <body>
 
+<!-- Cargando (mientras se comprueba si ya hay sesión guardada) -->
+<div id="cargando" class="center-wrap">
+  <p style="color:#fff;font-weight:600;">Cargando panel…</p>
+</div>
+
 <!-- Acceso de editor (token de GitHub) -->
 <div id="login" class="center-wrap" hidden>
   <form id="login-form" class="auth-card" autocomplete="off">
@@ -57,7 +67,7 @@
     <h2>Panel de administración</h2>
     <p class="sub">Solo para responsables del grupo</p>
     <div class="field"><label for="token">Token de GitHub</label>
-      <input id="token" type="password" placeholder="ghp_… o github_pat_…" required></div>
+      <input id="token" type="password" placeholder="ghp_… o github_pat_…" autofocus required></div>
     <p class="hint">¿No tienes token? Crea uno siguiendo la guía <strong>CONFIGURAR-GITHUB.md</strong>. Se guarda solo en este navegador.</p>
     <button class="btn" type="submit">Entrar</button>
     <p class="auth-error" id="login-err"></p>
@@ -76,6 +86,11 @@
     </div>
   </header>
   <div class="admin-body container">
+    <div class="tip admin-help">
+      Elige una sección, pulsa <strong>+ Añadir</strong> para crear un elemento nuevo o usa <strong>Editar</strong> /
+      <strong>Borrar</strong> en uno ya existente. Los cambios se guardan solos en GitHub y tardan
+      <strong>~1 minuto</strong> en verse en la web — no hace falta hacer nada más.
+    </div>
     <div class="tabs" id="tabs"></div>
     <div class="toolbar"><h2 id="sec-title"></h2><button class="btn-pill" id="nuevo">+ Añadir</button></div>
     <div class="admin-list" id="lista"></div>
@@ -196,7 +211,7 @@ async function operar(modificar){
   estado.items = fresco.items; estado.sha = nuevoSha;
 }
 
-function mostrar(id){ ["login","app"].forEach(function(x){ $(x).hidden = (x!==id); }); }
+function mostrar(id){ ["cargando","login","app"].forEach(function(x){ $(x).hidden = (x!==id); }); }
 
 async function arrancar(){
   if(!GH.owner || !GH.repo){ alert("Falta configurar el repositorio en assets/config.js"); }
@@ -205,6 +220,7 @@ async function arrancar(){
     catch(e){ /* token guardado no válido: pedirlo de nuevo */ }
   }
   mostrar("login");
+  var t = $("token"); if(t) t.focus();
 }
 
 $("login-form").addEventListener("submit", async function(e){
@@ -224,15 +240,21 @@ $("logout").addEventListener("click", function(){
   token=""; location.reload();
 });
 $("refrescar").addEventListener("click", async function(){
-  try{ var d=await ghLeer(); estado.items=d.items; estado.sha=d.sha; cargarLista(); aviso("Contenido actualizado."); }
-  catch(e){ aviso("No se pudo recargar."); }
+  $("lista").innerHTML = '<p class="cargando-lista">Actualizando…</p>';
+  try{ var d=await ghLeer(); estado.items=d.items; estado.sha=d.sha; pintarTabs(); cargarLista(); aviso("Contenido actualizado."); }
+  catch(e){ aviso("No se pudo recargar."); cargarLista(); }
 });
 
 function entrarApp(){ mostrar("app"); pintarTabs(); seleccionar("albumes"); }
 
+function contarSeccion(k){ return estado.items.filter(function(x){ return x.seccion===k; }).length; }
+
 function pintarTabs(){
   var h="";
-  Object.keys(SECCIONES).forEach(function(k){ h+='<button class="tab" data-k="'+k+'">'+esc(SECCIONES[k].nombre)+'</button>'; });
+  Object.keys(SECCIONES).forEach(function(k){
+    h+='<button class="tab'+(k===seccionActual?" activa":"")+'" data-k="'+k+'" type="button">'+
+       esc(SECCIONES[k].nombre)+' <span class="tab-n">'+contarSeccion(k)+'</span></button>';
+  });
   $("tabs").innerHTML=h;
   Array.prototype.forEach.call($("tabs").querySelectorAll(".tab"), function(b){
     b.addEventListener("click", function(){ seleccionar(b.getAttribute("data-k")); });
@@ -278,9 +300,15 @@ function abrirForm(row){
   });
   $("form").innerHTML=h;
   $("modal").hidden=false;
+  var primero = $("form").querySelector("input,textarea");
+  if(primero) primero.focus();
 }
-$("cancelar").addEventListener("click", function(){ $("modal").hidden=true; });
+function cerrarModal(){ $("modal").hidden=true; }
+$("cancelar").addEventListener("click", cerrarModal);
 $("nuevo").addEventListener("click", function(){ abrirForm(null); });
+// Cerrar el modal pulsando fuera de la tarjeta o con la tecla Escape (más intuitivo)
+$("modal").addEventListener("click", function(e){ if(e.target===this) cerrarModal(); });
+document.addEventListener("keydown", function(e){ if(e.key==="Escape" && !$("modal").hidden) cerrarModal(); });
 
 $("guardar").addEventListener("click", async function(){
   $("form-err").textContent="";
@@ -316,7 +344,7 @@ $("guardar").addEventListener("click", async function(){
       campos.forEach(function(c){ nuevo[c.col]=datos[c.col]; });
       await operar(function(items){ items.push(nuevo); });
     }
-    $("modal").hidden=true; cargarLista(); aviso("Guardado. Aparecerá en la web en ~1 minuto.");
+    cerrarModal(); pintarTabs(); cargarLista(); aviso("Guardado. Aparecerá en la web en ~1 minuto.");
   }catch(err){ $("form-err").textContent = err.message; }
   $("guardar").disabled=false; $("guardar").textContent="Guardar";
 });
@@ -328,7 +356,7 @@ async function borrar(id){
       var i=items.findIndex(function(z){return z.id===id;});
       if(i>=0) items.splice(i,1);
     });
-    cargarLista(); aviso("Borrado.");
+    pintarTabs(); cargarLista(); aviso("Borrado.");
   }catch(err){ alert(err.message); }
 }
 
