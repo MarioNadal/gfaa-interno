@@ -5,6 +5,14 @@
    La contraseña NO se guarda en texto plano: solo se guarda su
    "huella" (hash SHA-256). Para cambiarla, usa la herramienta
    utilidades/generar-clave.html y pega el resultado abajo.
+
+   IMPORTANTE (léelo): esto es una web ESTATICA (GitHub Pages),
+   sin servidor propio. Esta contraseña evita que un visitante
+   ocasional vea el contenido, pero NO es una seguridad fuerte:
+   cualquier persona con conocimientos técnicos podría saltarla
+   (por ejemplo, abriendo las herramientas de desarrollador del
+   navegador). No subáis aquí datos realmente sensibles (DNI,
+   datos bancarios, datos médicos, etc.).
    ========================================================= */
 
 /* ===========================================================
@@ -12,7 +20,7 @@
    =========================================================== */
 const GFAA_CONFIG = {
   // Huella (hash) de la contraseña del grupo.
-  // Contraseña por defecto: gfaa2026   (¡cámbiala!)
+  // Genera la tuya en utilidades/generar-clave.html — ¡no dejes la de ejemplo!
   hash: "888136bb9ed552eb3a1a83d008efda2509e06b6b92d1e537901c03dddad395aa",
 
   // Texto que aparece en la pantalla de acceso
@@ -92,22 +100,12 @@ function gfaaUnlock(){
   document.documentElement.classList.remove("locked");
   var ov = document.getElementById("gfaa-auth");
   if(ov) ov.remove();
-  gfaaPintarSaludo();
 }
 function gfaaLogout(){
   try{ sessionStorage.removeItem("gfaa_auth"); }catch(e){}
   location.reload();
 }
 window.gfaaLogout = gfaaLogout;
-
-/* Saludo personalizado (opcional, se guarda solo en este dispositivo) */
-function gfaaPintarSaludo(){
-  var nombre = "";
-  try{ nombre = localStorage.getItem("gfaa_nombre") || ""; }catch(e){}
-  document.querySelectorAll("[data-saludo]").forEach(function(el){
-    el.textContent = nombre ? ("Hola, " + nombre + ".") : "";
-  });
-}
 
 /* ---------- Pantalla de acceso ---------- */
 function gfaaMostrarLogin(){
@@ -122,10 +120,6 @@ function gfaaMostrarLogin(){
       emblem +
       '<h2>'+GFAA_CONFIG.titulo+'</h2>'+
       '<p class="sub">'+GFAA_CONFIG.subtitulo+'</p>'+
-      '<div class="field">'+
-        '<label for="gfaa-nombre">Tu nombre (opcional)</label>'+
-        '<input id="gfaa-nombre" type="text" placeholder="Nombre y apellidos" autocomplete="off">'+
-      '</div>'+
       '<div class="field">'+
         '<label for="gfaa-pass">Contraseña del grupo</label>'+
         '<input id="gfaa-pass" type="password" placeholder="••••••••" autocomplete="off" required>'+
@@ -142,11 +136,9 @@ function gfaaMostrarLogin(){
 
   form.addEventListener("submit", function(ev){
     ev.preventDefault();
-    var pass   = document.getElementById("gfaa-pass").value;
-    var nombre = document.getElementById("gfaa-nombre").value.trim();
+    var pass = document.getElementById("gfaa-pass").value;
     if(gfaaHash(pass) === GFAA_CONFIG.hash){
       try{ sessionStorage.setItem("gfaa_auth","1"); }catch(e){}
-      try{ if(nombre) localStorage.setItem("gfaa_nombre", nombre); }catch(e){}
       gfaaUnlock();
     }else{
       err.textContent = "Contraseña incorrecta. Inténtalo de nuevo.";
